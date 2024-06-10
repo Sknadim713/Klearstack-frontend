@@ -1,0 +1,77 @@
+<div class="container-fluid">
+    <div class="row d-flex justify-content-center align-items-center vh-100">
+        <div class="col-8">
+            <div class="card shadow">
+                <div class="card-body">
+                    <form [formGroup]="register" (ngSubmit)="OnSubmit()">
+                        <div class="card-body">
+                          <div class="d-flex justify-content-between align-items-end mb-4">
+                            <h3 class="mb-0"><b>Sign up</b></h3>
+                            <a [routerLink]="['/login']" class="link-primary">Already have an account?</a>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-6">
+                              <div class="form-group mb-3">
+                                <label class="form-label" for="firstName">First Name*</label>
+                                <input type="text" class="form-control" formControlName="fname" id="firstName" placeholder="First Name" />
+                                <div *ngIf="register.get('fname')?.touched && register.get('fname')?.invalid" class="text-danger">
+                                  First Name is required.
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group mb-3">
+                                <label class="form-label" for="lastName">Last Name*</label>
+                                <input type="text" class="form-control" formControlName="lname" id="lastName" placeholder="Last Name" />
+                                <div *ngIf="register.get('lname')?.touched && register.get('lname')?.invalid" class="text-danger">
+                                  Last Name is required.
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group mb-3 ">
+                                <label class="form-label" for="Role">Role</label>
+                                <select class="form-select bg-light" id="Role" formControlName="role">
+                                  <option value="">Select a Role</option>
+                                  <option value="admin">Admin</option>
+                                  <option value="staff">Staff</option>
+                                  <option value="teacher">Teacher</option>
+                                  <option value="student">Student</option>
+                                </select>
+                                <div *ngIf="register.get('role')?.touched && register.get('role')?.invalid" class="text-danger">
+                                  Role is required.
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group mb-3">
+                                <label class="form-label" for="emailAddress">Email Address*</label>
+                                <input type="email" class="form-control" formControlName="email" id="emailAddress" placeholder="Email Address" />
+                                <div *ngIf="register.get('email')?.touched && register.get('email')?.invalid" class="text-danger">
+                                  Enter a valid email address.
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-6">
+                              <div class="form-group mb-3">
+                                <label class="form-label" for="password">Password</label>
+                                <input type="password" class="form-control" formControlName="password" id="password" placeholder="Password" />
+                                <div *ngIf="register.get('password')?.touched && register.get('password')?.invalid" class="text-danger">
+                                  Password is required 
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="d-grid mt-3">
+                            <button type="submit" class="btn btn-primary">Create Account</button>
+                          </div>
+                        </div>
+                      </form>
+                      
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>

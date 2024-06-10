@@ -1,0 +1,55 @@
+<div class="container-fluid">
+  <div class="row d-flex justify-content-center align-items-center vh-100">
+      <div class="col-6">
+          <div class="card shadow">
+              <div class="card-body">
+              <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-end mb-4">
+      <h3 class="mb-0"><b>Log In</b></h3>
+      <a [routerLink]="['/register']" class="link-primary">Create account?</a>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group mb-3">
+          <label class="form-label" for="emailAddress">Email Address*</label>
+          <input type="email" class="form-control" name="email" [(ngModel)]="email" id="emailAddress" placeholder="Email Address" required />
+          <div *ngIf="loginForm.submitted && !email" class="text-danger">
+            Enter a valid email address.
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div class="form-group mb-3">
+          <label class="form-label" for="password">Password</label>
+          <input type="password" class="form-control" name="password" [(ngModel)]="password" id="password" placeholder="Password" required />
+          <div *ngIf="loginForm.submitted && !password" class="text-danger">
+            Password is required 
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-grid mt-3">
+      <button type="submit" class="btn btn-primary">Log In</button>
+    </div>
+
+    @if(message()){
+      <p class="text-danger my-3"><strong>{{ message() }}</strong></p>
+    }
+    
+   
+
+    
+    
+  </div>
+</form>
+
+                
+                    
+              </div>
+          </div>
+
+
+      </div>
+  </div>
+</div>
