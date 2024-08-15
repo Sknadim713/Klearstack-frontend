@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ServiceService } from '../Core/service.service';
 import { FormGroup, Validators, FormsModule, ReactiveFormsModule, FormBuilder } from '@angular/forms';
 
@@ -12,19 +12,51 @@ import { Router, RouterModule } from '@angular/router';
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy {
   register!: FormGroup
-  constructor(private ApiService: ServiceService, private route: Router, private fb: FormBuilder) {
-
+  proof: any;
+  userId: any
+  user: any
+  constructor(
+    private ApiService: ServiceService,
+    private route: Router,
+    private fb: FormBuilder
+  ) {
+   
   }
+  
+  
+  ngOnDestroy() {
+    if (typeof window !== 'undefined' && window.sessionStorage) {
+sessionStorage.removeItem("userId")
+    }
+  }
+  
+
 
   ngOnInit(): void {
+    if (typeof window !== 'undefined' && typeof sessionStorage !== 'undefined') {
+      this.userId = sessionStorage.getItem('userId');
+      console.log("user id", this.userId);
+  
+      // Check if userId is available and has a length greater than 0
+      if (this.userId && this.userId.length > 0) {
+        this.GetUserById(); // Call API to get user details
+      } else {
+        console.log("No userId available, skipping API call.");
+      }
+    } else {
+      console.log("Session storage is not available.");
+    }
+
+
     this.register = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       fname: ['', Validators.required],
       lname: ['', Validators.required],
       role: ['', Validators.required],
+      idproof: ['', Validators.required],
       permission: [false],
     });
 
@@ -72,24 +104,86 @@ export class RegisterComponent implements OnInit {
   //  }
   // }
 
+  UploadId(event: any) {
+    this.proof = event.target.files[0];
+    console.log(this.proof);
+
+  }
   OnSubmit() {
-    console.log(this.register.value);
-    if (this.register.valid) {
-      this.ApiService.Register(this.register.value).subscribe({
-        next: (response: any) => {
-          console.log(response);
-          this.route.navigate(['/login']);
-          this.register.reset()
-        },
-        error: (err: any) => {
-          console.log(err);
-        }
-      });
-    } else {
-      console.log("please fill form");
+    const formData = new FormData();
+
+    // Correct the email field handling
+    formData.append('email', this.register.value.email ? this.register.value.email : '');
+
+    formData.append('password', this.register.value.password ? this.register.value.password : '');
+    formData.append('fname', this.register.value.fname ? this.register.value.fname : '');
+    formData.append('lname', this.register.value.lname ? this.register.value.lname : '');
+    formData.append('role', this.register.value.role ? this.register.value.role : '');
+    formData.append('permission', this.register.value.permission ? 'true' : 'false');
+    if (this.proof) {
+      formData.append('idproof', this.proof);
     }
+    if(this.userId !==0 && this.userId !==null) {
+      if(this.register.valid){
+        this.ApiService.UpdateByid(this.userId, formData).subscribe({
+          next: (response: any) => {
+            console.log(response);
+            this.route.navigate(['/login']);
+            this.register.reset();
+            console.log("User Updated");
+          },
+          error: (err: any) => {
+            console.log(err);
+          }
+        });
+      }
+      
+    }else{
+      if (this.register.valid) {
+        this.ApiService.Register(formData).subscribe({
+          next: (response: any) => {
+            console.log(response);
+            this.route.navigate(['/login']);
+            this.register.reset();
+          },
+          error: (err: any) => {
+            console.log(err);
+          }
+        });
+      } else {
+        console.log("please fill form");
+      }
+    }
+   
+
+  }
+
+  GetUserById() {
+    this.ApiService.UserViewById(this.userId).subscribe({
+      next: (resp: any) => {
+        this.user = resp.data;
+        console.log("details", this.user);
+        this.setFormControl(this.user)
+      },
+      error: (error: any) => {
+        console.log(error);
+      }
+    });
   }
 
 
+  setFormControl(resp: any) {
+    this.register.patchValue({
+      email: resp.email,
+      password: resp.password,
+      fname: resp.fname,
+      lname: resp.lname,
+      role: resp.role,
+      permission: resp.permission,
+      idproofUrl: resp.idproof
+    });
+    console.log("patch", resp);
+
+  }
 
 }

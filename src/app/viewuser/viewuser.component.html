@@ -15,25 +15,32 @@
                     <div class="col-6 my-3">
                         <div class="d-flex align-items-center ">
                             <label for="name" class="h6">Name :</label> 
-                            <h6 class="ms-3 text-center" *ngIf="(user$ | async) as user">{{ user.fname }} {{ user.lname }}</h6> 
+                            <h6 class="ms-3 text-center">{{ user?.fname }} {{ user?.lname }}</h6> 
                         </div>
                     </div>
                     <div class="col-6 my-3">
                         <div class="d-flex align-items-center ">
                             <label for="Email" class="h6">Email :</label> 
-                            <h6 class="ms-3 text-center" *ngIf="(user$ | async) as user">{{user.email}}</h6> 
+                            <h6 class="ms-3 text-center">{{user?.email}}</h6> 
                         </div>
                     </div>
                     <div class="col-6 my-3">
                         <div class="d-flex align-items-center ">
                             <label for="Role" class="h6" >Role :</label> 
-                            <h6 class="ms-3 text-center" *ngIf="(user$ | async) as user">{{user.role}}</h6> 
+                            <h6 class="ms-3 text-center">{{user?.role}}</h6> 
+                        </div>
+                    </div>
+                    <div class="col-6 my-3">
+                        <div class="d-flex align-items-center ">
+                            <label for="Role" class="h6" >ID Proof :</label> 
+                         
+                            <img class="w-50" [src]="user?.idproof" alt="">
                         </div>
                     </div>
                     <div class="col-6 my-3">
                         <div class="d-flex align-items-center ">
                             <label for="Date" class="h6">Date :</label> 
-                            <h6 class="ms-3 text-center" *ngIf="(user$ | async) as user">{{user.createdAt | date: 'dd/MM/yyyy'}}</h6> 
+                            <h6 class="ms-3 text-center">{{user?.createdAt | date: 'dd/MM/yyyy'}}</h6> 
                         </div>
                     </div>
                 </div>

@@ -11,21 +11,36 @@ import { Observable } from 'rxjs';
   styleUrl: './viewuser.component.css'
 })
 export class ViewuserComponent implements OnInit {
-  user$!: Observable<any>;
+  // user$!: Observable<any>;
+  user:any;
   userId: any;
 
   constructor(private _Service: ServiceService) { }
 
   ngOnInit(): void {
     this.userId = sessionStorage.getItem('userId');
-    if (this.userId) {
-      this.user$ = this._Service.UserViewById(this.userId);
-    } else {
-      console.error('User ID not found ');
-    }
+    this.GetUserById()
+    // if (this.userId) {
+    //   this.user$ = this._Service.UserViewById(this.userId);
+    // } else {
+    //   console.error('User ID not found ');
+    // }
   }
 
   goBack() {
     history.back();
   }
+
+  GetUserById() {
+    this._Service.UserViewById(this.userId).subscribe({
+      next: (resp: any) => {
+        this.user = resp.data;
+        console.log("details", this.user);
+      },
+      error: (error: any) => {
+        console.log(error);
+      }
+    });
+  }
+  
 }

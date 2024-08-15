@@ -31,10 +31,13 @@ export class ServiceService {
   Permission(userId: string, data: any): Observable<any> {
     return this._http.put(`${this.Base_Url}/user/permissionAprove?userId=${userId}`, data);
   }
+  UpdateByid(userId: string, data: any): Observable<any> {
+    return this._http.put(`${this.Base_Url}/user/UpdateUser/${userId}`, data);
+  }
 
 
   UserViewById(UserId: any): Observable<any> {
-    return this._http.get(`${this.Base_Url}/user/UserViewById?UserId=${UserId}`)
+    return this._http.get(`${this.Base_Url}/user/ViewAboutById?UserId=${UserId}`)
   }
 
 

@@ -30,14 +30,11 @@ export class LoginComponent implements OnInit {
     if (form.valid) {
       this.ApiService.userLogin(this.email, this.password).subscribe(
         (response: any) => {
-          console.log(response + 'values');
-          console.log('Login successful');
           sessionStorage.setItem("userID", response.data._id);
           sessionStorage.setItem("role", response.data.role);
           sessionStorage.setItem("permission", response.data.permission);
           sessionStorage.setItem("username", response.data.fname);
           sessionStorage.setItem("userfname", response.data.lname);
-          console.log(response.data.lname);
           this.route.navigate(['/users']);
         },
         (error) => {

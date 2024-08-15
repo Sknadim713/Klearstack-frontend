@@ -112,4 +112,9 @@ export class UserComponent implements OnInit, OnDestroy {
     });
   }
 
+  onedit(userId:any){
+    sessionStorage.setItem('userId', userId);
+    this._route.navigate(['/register'])
+  }
+
 }
