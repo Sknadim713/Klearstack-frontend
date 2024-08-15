@@ -13,6 +13,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { Route, Router } from '@angular/router';
+import { environment } from '../../environments/environments';
 
 @Component({
   selector: 'app-user',
@@ -38,7 +39,7 @@ export class UserComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['Sr.no', 'email', 'fname', 'lname', 'role', 'createdAt'];
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
   private ApiSubscribe: Subscription = new Subscription();
-
+documentpath =environment
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 

@@ -114,7 +114,6 @@ sessionStorage.removeItem("userId")
 
     // Correct the email field handling
     formData.append('email', this.register.value.email ? this.register.value.email : '');
-
     formData.append('password', this.register.value.password ? this.register.value.password : '');
     formData.append('fname', this.register.value.fname ? this.register.value.fname : '');
     formData.append('lname', this.register.value.lname ? this.register.value.lname : '');
