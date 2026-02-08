@@ -1,13 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environments';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ServiceService {
 
-  private Base_Url = 'http://localhost:5000'
+  private Base_Url = environment.apiUrl
+  // https://www.klearstackpractice.com/
+  // baseUrl2 = "https://mlaapi.orisunlifescience.com/public/api";
   constructor(private _http: HttpClient) { }
 
 
@@ -43,5 +46,16 @@ export class ServiceService {
 
   UserDeleteById(UserId: any): Observable<any> {
     return this._http.delete(`${this.Base_Url}/user/deleteUserById?UserId=${UserId}`)
+  }
+
+
+
+
+   getidlist(): Observable<any> {
+    return this._http.get(`${this.Base_Url}/idverification/getidlist`)
+  }
+
+   getformcId(idcode: any): Observable<any> {
+    return this._http.get(`${this.Base_Url}/idverification/getbyidcode/${idcode}`)
   }
 }

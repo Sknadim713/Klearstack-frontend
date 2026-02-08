@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function outerFunction() {
+    let outerVar = 'shaikh';
+    
+    function innerFunction() {
+        console.log(outerVar); // यह outerVar तक पहुँच सकता है, भले ही outerFunction समाप्त हो गया हो
+    }
+    
+    return innerFunction;
+}
+
+const myClosure = outerFunction();
+myClosure(); 
+console.log(myClosure())
+
+const nadim = ()=> {
+let innerFunction ="nadim"
+
+const shaikh = ()=> {
+    console.log(innerFunction);
+    
+}
+const name =nadim()
+console.log(name());
+name()
+
+
+}
+    </script>
+</body>
+</html>

@@ -1,0 +1,210 @@
+
+<div class="container-fluid mt-3">
+  <div class="row g-3">
+
+    <!-- LEFT SIDE (FORM SECTION) -->
+    <div class="col-md-8">
+      <div class="card shadow-sm border-0 rounded-3 p-3">
+        <h5 class="mb-3 text-primary fw-bold">ID Verification Form</h5>
+
+        @if (selectedIdCode() === '') {
+          <div class="alert alert-warning mb-0">
+            Please select one ID type from right side ✅
+          </div>
+        } @else {
+
+          <div class="alert alert-success">
+            Selected ID Code: <b>{{ selectedIdCode() }}</b>
+          </div>
+
+          <!-- DYNAMIC FORM -->
+          <form [formGroup]="DocumentForm" (ngSubmit)="submitForm()">
+
+            @if (formSchema()?.fields?.length > 0) {
+
+              @for (field of formSchema().fields; track field.key) {
+
+                <!-- TEXT / NUMBER / EMAIL / DATE -->
+                @if (field.type === 'text' || field.type === 'number' || field.type === 'email' || field.type === 'date') {
+
+                  <div class="mb-3">
+                    <label class="form-label fw-semibold">
+                      {{ field.label }}
+                      @if (field.required) { <span class="text-danger">*</span> }
+                    </label>
+
+                    <input
+                      class="form-control"
+                      [type]="field.type"
+                      [placeholder]="field.placeholder || ''"
+                      [formControlName]="field.key"
+                    />
+
+                    @if (DocumentForm.get(field.key)?.touched && DocumentForm.get(field.key)?.invalid) {
+                      <small class="text-danger">
+                        This field is required
+                      </small>
+                    }
+                  </div>
+
+                }
+
+                <!-- CHECKBOX -->
+                @if (field.type === 'checkbox') {
+
+                  <div class="mb-3">
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        [formControlName]="field.key"
+                        [id]="field.key"
+                      />
+                      <label class="form-check-label fw-semibold" [for]="field.key">
+                        {{ field.label }}
+                        @if (field.required) { <span class="text-danger">*</span> }
+                      </label>
+                    </div>
+
+                    @if (DocumentForm.get(field.key)?.touched && DocumentForm.get(field.key)?.invalid) {
+                      <small class="text-danger">
+                        Please accept this checkbox
+                      </small>
+                    }
+                  </div>
+
+                }
+
+                <!-- RADIO -->
+                @if (field.type === 'radio') {
+                  <div class="mb-3">
+                    <label class="form-label fw-semibold">
+                      {{ field.label }}
+                      @if (field.required) { <span class="text-danger">*</span> }
+                    </label>
+
+                    @for (opt of field.options; track opt.value) {
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          [value]="opt.value"
+                          [formControlName]="field.key"
+                          [id]="field.key + '_' + opt.value"
+                        />
+                        <label class="form-check-label" [for]="field.key + '_' + opt.value">
+                          {{ opt.label }}
+                        </label>
+                      </div>
+                    }
+                  </div>
+                }
+
+                <!-- SELECT -->
+                @if (field.type === 'select') {
+                  <div class="mb-3">
+                    <label class="form-label fw-semibold">
+                      {{ field.label }}
+                      @if (field.required) { <span class="text-danger">*</span> }
+                    </label>
+
+                    <select class="form-select" [formControlName]="field.key">
+                      <option value="">-- Select --</option>
+                      @for (opt of field.options; track opt.value) {
+                        <option [value]="opt.value">{{ opt.label }}</option>
+                      }
+                    </select>
+                  </div>
+                }
+
+              }
+
+              <!-- BUTTONS -->
+              <div class="d-flex gap-2 mt-4">
+
+                @if (formSchema()?.buttons?.submit) {
+                  <button class="btn btn-primary px-4" type="submit">
+                    Submit
+                  </button>
+                }
+
+                @if (formSchema()?.buttons?.reset) {
+                  <button class="btn btn-outline-secondary px-4" type="button" (click)="resetForm()">
+                    Reset
+                  </button>
+                }
+
+                @if (formSchema()?.buttons?.cancel) {
+                  <button class="btn btn-outline-danger px-4 ms-auto" type="button" (click)="cancelForm()">
+                    Cancel
+                  </button>
+                }
+
+              </div>
+
+            } @else {
+              <div class="alert alert-info mb-0">
+                No fields found for this ID.
+              </div>
+            }
+
+          </form>
+        }
+      </div>
+    </div>
+
+    <!-- RIGHT SIDE (CARD LIST SECTION) -->
+    <div class="col-md-4">
+      <div class="card shadow-sm border-0 rounded-3 p-3">
+        <h6 class="mb-3 fw-bold text-dark">ID Types</h6>
+
+        @if (idList().length === 0) {
+          <div class="text-muted">
+            No ID list found...
+          </div>
+        } @else {
+
+          @for (item of idList(); track item.idcode) {
+
+            <div
+              class="card mb-2 border border-primary border-2 shadow-sm"
+              style="cursor: pointer;"
+              (click)="selectId(item)"
+              [class.border]="selectedIdCode() === item.idcode"
+              [class.border-primary]="selectedIdCode() === item.idcode"
+            >
+              <div class="card-body d-flex justify-content-between align-items-center">
+
+                <div>
+                  <h6 class="mb-0 fw-semibold">{{ item.label }}</h6>
+                  <small class="text-muted">Code: {{ item.idcode }}</small>
+                </div>
+
+                <div class="form-check m-0">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    [checked]="selectedIdCode() === item.idcode"
+                    (click)="$event.stopPropagation()"
+                    (change)="selectId(item)"
+                  />
+                </div>
+
+              </div>
+            </div>
+
+          }
+        }
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+
+

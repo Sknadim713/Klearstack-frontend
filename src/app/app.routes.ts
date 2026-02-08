@@ -4,6 +4,7 @@ import { UserComponent } from './user/user.component';
 import { LayoutComponent } from './layout/layout.component';
 import { RegisterComponent } from './register/register.component';
 import { ViewuserComponent } from './viewuser/viewuser.component';
+import { IdVerificationComponent } from './id-verification/id-verification.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -14,7 +15,8 @@ export const routes: Routes = [
         children: [
 
 
-            { path: 'users', component: UserComponent, data: { title: 'Users' } },
+{ path: 'users', component: UserComponent },
+{ path: 'verfication', component: IdVerificationComponent },
             { path: 'viewUser', component: ViewuserComponent, data: { title: 'viewUser' } },
         ]
     }

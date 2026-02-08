@@ -1,5 +1,5 @@
 
-import { FormsModule, NgForm } from '@angular/forms';
+import { FormsModule, NgForm, ReactiveFormsModule } from '@angular/forms';
 // import { ServiceService } from '../Core/service.service';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [RouterModule, FormsModule, CommonModule],
+  imports: [RouterModule, FormsModule, CommonModule,ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -27,6 +27,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void { }
 
   onSubmit(form: NgForm) {
+
     if (form.valid) {
       this.ApiService.userLogin(this.email, this.password).subscribe(
         (response: any) => {
